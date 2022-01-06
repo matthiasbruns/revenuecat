@@ -40,7 +40,7 @@ func TestUpdateSubscriberAttributes(t *testing.T) {
 	rc := New("apikey")
 	rc.http = cl
 
-	attrs := map[string]SubscriberAttribute{
+	attrs := &map[string]*SubscriberAttribute{
 		"foo": {Value: "bar"},
 		"x": {
 			Value:     "y",
@@ -109,7 +109,7 @@ func TestSubscriberAttributeUnmarshalJSON(t *testing.T) {
 func TestSubscriberIsEntitledTo(t *testing.T) {
 	tests := []struct {
 		name        string
-		sub         map[string]Entitlement
+		sub         map[string]*Entitlement
 		entitlement string
 		expected    bool
 	}{{
@@ -119,19 +119,19 @@ func TestSubscriberIsEntitledTo(t *testing.T) {
 		expected:    false,
 	}, {
 		name:        "empty",
-		sub:         make(map[string]Entitlement),
+		sub:         make(map[string]*Entitlement),
 		entitlement: "test",
 		expected:    false,
 	}, {
 		name: "missing",
-		sub: map[string]Entitlement{
+		sub: map[string]*Entitlement{
 			"foo": {},
 		},
 		entitlement: "test",
 		expected:    false,
 	}, {
 		name: "expired",
-		sub: map[string]Entitlement{
+		sub: map[string]*Entitlement{
 			"test": {
 				ExpiresDate: time.Now().Add(-time.Hour),
 			},
@@ -140,7 +140,7 @@ func TestSubscriberIsEntitledTo(t *testing.T) {
 		expected:    false,
 	}, {
 		name: "subscribed",
-		sub: map[string]Entitlement{
+		sub: map[string]*Entitlement{
 			"test": {
 				ExpiresDate: time.Now().Add(time.Hour),
 			},

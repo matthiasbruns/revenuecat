@@ -9,7 +9,8 @@ func TestGrantEntitlement(t *testing.T) {
 	rc := New("apikey")
 	rc.http = cl
 
-	_, err := rc.GrantEntitlement("123", "all", ThreeMonth, staticTime(t, "2020-01-15 23:54:17"))
+	time := staticTime(t, "2020-01-15 23:54:17")
+	_, err := rc.GrantEntitlement("123", "all", ThreeMonth, &time)
 	if err != nil {
 		t.Errorf("error: %v", err)
 	}
