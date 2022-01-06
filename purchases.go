@@ -16,7 +16,7 @@ type CreatePurchaseOptions struct {
 
 // CreatePurchase records a purchase for a user from iOS, Android, or Stripe and will create a user if they don't already exist.
 // https://docs.revenuecat.com/reference#receipts
-func (c *Client) CreatePurchase(userID string, receipt string, opt *CreatePurchaseOptions) (Subscriber, error) {
+func (c *Client) CreatePurchase(userID string, receipt string, opt *CreatePurchaseOptions) (*Subscriber, error) {
 	var resp struct {
 		Subscriber Subscriber `json:"subscriber"`
 	}
@@ -37,5 +37,5 @@ func (c *Client) CreatePurchase(userID string, receipt string, opt *CreatePurcha
 	}
 
 	err := c.call("POST", "receipts", req, platform, &resp)
-	return resp.Subscriber, err
+	return &resp.Subscriber, err
 }

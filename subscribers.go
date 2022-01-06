@@ -7,14 +7,14 @@ import (
 
 // Subscriber holds a subscriber returned by the RevenueCat API.
 type Subscriber struct {
-	OriginalAppUserID          string                         `json:"original_app_user_id"`
-	OriginalApplicationVersion *string                        `json:"original_application_version"`
-	FirstSeen                  time.Time                      `json:"first_seen"`
-	LastSeen                   time.Time                      `json:"last_seen"`
-	Entitlements               map[string]Entitlement         `json:"entitlements"`
-	Subscriptions              map[string]Subscription        `json:"subscriptions"`
-	NonSubscriptions           map[string]NonSubscription     `json:"non_subscriptions"`
-	SubscriberAttributes       map[string]SubscriberAttribute `json:"subscriber_attributes"`
+	OriginalAppUserID          string                          `json:"original_app_user_id"`
+	OriginalApplicationVersion *string                         `json:"original_application_version"`
+	FirstSeen                  time.Time                       `json:"first_seen"`
+	LastSeen                   time.Time                       `json:"last_seen"`
+	Entitlements               map[string]*Entitlement         `json:"entitlements"`
+	Subscriptions              map[string]*Subscription        `json:"subscriptions"`
+	NonSubscriptions           map[string]*NonSubscription     `json:"non_subscriptions"`
+	SubscriberAttributes       map[string]*SubscriberAttribute `json:"subscriber_attributes"`
 }
 
 // https://docs.revenuecat.com/reference#the-entitlement-object
@@ -83,28 +83,28 @@ func (s Subscriber) IsEntitledTo(entitlement string) bool {
 
 // GetSubscriber gets the latest subscriber info or creates one if it doesn't exist.
 // https://docs.revenuecat.com/reference#subscribers
-func (c *Client) GetSubscriber(userID string) (Subscriber, error) {
+func (c *Client) GetSubscriber(userID string) (*Subscriber, error) {
 	return c.GetSubscriberWithPlatform(userID, "")
 }
 
 // GetSubscriberWithPlatform gets the latest subscriber info or creates one if it doesn't exist, updating the subscriber record's last_seen
 // value for the platform provided.
 // https://docs.revenuecat.com/reference#subscribers
-func (c *Client) GetSubscriberWithPlatform(userID string, platform string) (Subscriber, error) {
+func (c *Client) GetSubscriberWithPlatform(userID string, platform string) (*Subscriber, error) {
 	var resp struct {
 		Subscriber Subscriber `json:"subscriber"`
 	}
 	err := c.call("GET", "subscribers/"+userID, nil, platform, &resp)
-	return resp.Subscriber, err
+	return &resp.Subscriber, err
 }
 
 // UpdateSubscriberAttributes updates subscriber attributes for a user.
 // https://docs.revenuecat.com/reference#update-subscriber-attributes
-func (c *Client) UpdateSubscriberAttributes(userID string, attributes map[string]SubscriberAttribute) error {
+func (c *Client) UpdateSubscriberAttributes(userID string, attributes *map[string]*SubscriberAttribute) error {
 	req := struct {
-		Attributes map[string]SubscriberAttribute `json:"attributes"`
+		Attributes map[string]*SubscriberAttribute `json:"attributes"`
 	}{
-		Attributes: attributes,
+		Attributes: *attributes,
 	}
 	return c.call("POST", "subscribers/"+userID+"/attributes", req, "", nil)
 }
@@ -118,7 +118,7 @@ func (c *Client) DeleteSubscriber(userID string) error {
 func (attr SubscriberAttribute) MarshalJSON() ([]byte, error) {
 	var updatedAt int64
 	if !attr.UpdatedAt.IsZero() {
-		updatedAt = toMilliseconds(attr.UpdatedAt)
+		updatedAt = toMilliseconds(&attr.UpdatedAt)
 	}
 	return json.Marshal(&struct {
 		Value     string `json:"value"`

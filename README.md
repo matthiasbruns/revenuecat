@@ -1,7 +1,7 @@
 # RevenueCat
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/mhemmings/revenuecat)](https://pkg.go.dev/github.com/mhemmings/revenuecat)
-[![Test](https://github.com/mhemmings/revenuecat/workflows/Test/badge.svg?branch=master)](https://github.com/mhemmings/revenuecat/actions?query=workflow%3ATest)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/matthiasbruns/revenuecat)](https://pkg.go.dev/github.com/matthiasbruns/revenuecat)
+[![Test](https://github.com/matthiasbruns/revenuecat/workflows/Test/badge.svg?branch=master)](https://github.com/matthiasbruns/revenuecat/actions?query=workflow%3ATest)
 
 Go package for interacting with the [RevenueCat API](https://docs.revenuecat.com/reference).
 
@@ -15,7 +15,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/mhemmings/revenuecat"
+	"github.com/matthiasbruns/revenuecat"
 )
 
 func main() {
@@ -29,7 +29,7 @@ func main() {
 
 ### Documentation
 
-For full documentation, see [pkg.go.dev/github.com/mhemmings/revenuecat](https://pkg.go.dev/github.com/mhemmings/revenuecat)
+For full documentation, see [pkg.go.dev/github.com/matthiasbruns/revenuecat](https://pkg.go.dev/github.com/matthiasbruns/revenuecat)
 
 
 #### func (*Client) AddUserAttribution

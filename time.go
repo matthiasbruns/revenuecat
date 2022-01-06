@@ -18,11 +18,11 @@ const (
 )
 
 // toMilliseconds takes a time and returns Unix epoch in milliseconds.
-func toMilliseconds(t time.Time) int64 {
-	return t.UTC().UnixNano() / 1e6
+func toMilliseconds(t *time.Time) int64 {
+	return t.UTC().UnixMilli()
 }
 
 // fromMilliseconds takes a Unix epoch in milliseconds value and returns a time.Time.
 func fromMilliseconds(t int64) time.Time {
-	return time.Unix(0, t*1e6)
+	return time.UnixMilli(t)
 }

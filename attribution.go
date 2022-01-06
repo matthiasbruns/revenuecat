@@ -21,7 +21,7 @@ type AttributionData struct {
 
 // AddUserAttribution attaches attribution data to a subscriber from specific supported networks.
 // https://docs.revenuecat.com/reference#subscribersattribution
-func (c *Client) AddUserAttribution(userID string, network Network, data AttributionData) error {
+func (c *Client) AddUserAttribution(userID string, network Network, data *AttributionData) error {
 	var resp struct {
 		Subscriber Subscriber `json:"subscriber"`
 	}
@@ -30,7 +30,7 @@ func (c *Client) AddUserAttribution(userID string, network Network, data Attribu
 		Data    AttributionData `json:"data"`
 		Network Network         `json:"network"`
 	}{
-		Data:    data,
+		Data:    *data,
 		Network: network,
 	}
 

@@ -1,3 +1,3 @@
-module github.com/mhemmings/revenuecat
+module github.com/matthiasbruns/revenuecat
 
 go 1.15
